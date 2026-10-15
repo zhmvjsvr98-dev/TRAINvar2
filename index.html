@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOMS | Train Operation Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+</head>
+<body>
+
+<!-- =========================
+ LOGIN
+========================= -->
+<div id="loginScreen" class="login-screen">
+
+<div class="login-left">
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+
+<div class="hero-logo">
+<div class="jr-logo">JR</div>
+
+<div>
+<h1>統合列車運行管理システム</h1>
+<p>TOMS : Train Operation Management System</p>
+</div>
+</div>
+
+<div class="hero-copy">
+鉄道の、<br>
+その先の安心へ。
+</div>
+
+</div>
+
+</div>
+
+<div class="login-right">
+
+<div class="glass-card login-card">
+
+<h2>ログイン</h2>
+
+<div class="input-group">
+<i class="fas fa-user"></i>
+<input
+id="userId"
+type="text"
+placeholder="ユーザーID"
+value="admin">
+</div>
+
+<div class="input-group">
+<i class="fas fa-lock"></i>
+<input
+id="password"
+type="password"
+placeholder="パスワード"
+value="password">
+</div>
+
+<label class="remember-area">
+<input type="checkbox" id="rememberLogin">
+ログイン状態を保持する
+</label>
+
+<button id="loginBtn" class="primary-btn">
+ログイン
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+ DASHBOARD
+========================= -->
+
+<div id="dashboardScreen" class="dashboard-screen hidden">
+
+<!-- HEADER -->
+
+<header class="topbar">
+
+<div class="topbar-left">
+
+<div class="brand">
+
+<span class="jr-mini">JR</span>
+
+<div>
+<div class="brand-main">
+統合列車運行管理システム
+</div>
+
+<div class="brand-sub">
+TOMS : Train Operation Management System
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="topbar-right">
+
+<div id="currentDateTime"></div>
+
+<div class="operator">
+<i class="fas fa-user"></i>
+運行管理者
+</div>
+
+<button id="logoutBtn" class="logout-btn">
+ログアウト
+</button>
+
+</div>
+
+</header>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<ul>
+
+<li class="active">
+<i class="fas fa-chart-line"></i>
+<span>ダッシュボード</span>
+</li>
+
+<li>
+<i class="fas fa-train"></i>
+<span>運行監視</span>
+</li>
+
+<li>
+<i class="fas fa-clock"></i>
+<span>時刻表管理</span>
+</li>
+
+<li>
+<i class="fas fa-subway"></i>
+<span>列車管理</span>
+</li>
+
+<li>
+<i class="fas fa-triangle-exclamation"></i>
+<span>遅延・運休管理</span>
+</li>
+
+<li>
+<i class="fas fa-bell"></i>
+<span>インシデント管理</span>
+</li>
+
+<li>
+<i class="fas fa-screwdriver-wrench"></i>
+<span>車両管理</span>
+</li>
+
+<li>
+<i class="fas fa-file-lines"></i>
+<span>レポート</span>
+</li>
+
+<li>
+<i class="fas fa-gear"></i>
+<span>設定</span>
+</li>
+
+</ul>
+
+</aside>
+
+<!-- CENTER -->
+
+<main class="content">
+
+<h1 class="page-title">
+ダッシュボード
+</h1>
+
+<!-- KPI -->
+
+<div class="stats-grid">
+
+<div class="stat-card green">
+
+<div class="stat-icon">
+<i class="fas fa-train"></i>
+</div>
+
+<div>
+<div class="stat-title">運行中</div>
+<div class="stat-value">
+28<span>本</span>
+</div>
+</div>
+
+</div>
+
+<div class="stat-card yellow">
+
+<div class="stat-icon">
+<i class="fas fa-clock"></i>
+</div>
+
+<div>
+<div class="stat-title">遅延</div>
+<div class="stat-value">
+3<span>本</span>
+</div>
+</div>
+
+</div>
+
+<div class="stat-card red">
+
+<div class="stat-icon">
+<i class="fas fa-triangle-exclamation"></i>
+</div>
+
+<div>
+<div class="stat-title">運休</div>
+<div class="stat-value">
+1<span>本</span>
+</div>
+</div>
+
+</div>
+
+<div class="stat-card bluegray">
+
+<div class="stat-icon">
+<i class="fas fa-wrench"></i>
+</div>
+
+<div>
+<div class="stat-title">点検中</div>
+<div class="stat-value">
+34<span>本</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- MAP -->
+
+<div class="panel map-panel">
+
+<div class="panel-title">
+路線運行状況マップ
+</div>
+
+<div class="line-tabs">
+
+<button class="tab active">山手線</button>
+<button class="tab">中央線</button>
+<button class="tab">京浜東北線</button>
+<button class="tab">東海道線</button>
+<button class="tab">横須賀線</button>
+
+</div>
+
+<div class="svg-map">
+
+<svg viewBox="0 0 900 420">
+
+<defs>
+
+<filter id="glow">
+<feGaussianBlur stdDeviation="4"/>
+</filter>
+
+</defs>
+
+<!-- route -->
+
+<rect
+x="70"
+y="70"
+width="750"
+height="250"
+rx="120"
+fill="none"
+stroke="#62ff9e"
+stroke-width="8"
+/>
+
+<!-- stations -->
+
+<g fill="#dae8ff">
+
+<circle cx="140" cy="70" r="8"/>
+<text x="120" y="45">東京</text>
+
+<circle cx="250" cy="70" r="8"/>
+<text x="220" y="45">神田</text>
+
+<circle cx="380" cy="70" r="8"/>
+<text x="340" y="45">秋葉原</text>
+
+<circle cx="560" cy="70" r="8"/>
+<text x="540" y="45">上野</text>
+
+<circle cx="740" cy="70" r="8"/>
+<text x="710" y="45">日暮里</text>
+
+<circle cx="820" cy="195" r="8"/>
+<text x="835" y="205">池袋</text>
+
+<circle cx="620" cy="320" r="8"/>
+<text x="590" y="355">新宿</text>
+
+<circle cx="430" cy="320" r="8"/>
+<text x="405" y="355">渋谷</text>
+
+<circle cx="250" cy="320" r="8"/>
+<text x="220" y="355">品川</text>
+
+</g>
+
+<!-- trains -->
+
+<g>
+
+<circle cx="350" cy="150" r="14" fill="#ffd54f"/>
+<text x="345" y="155">🚆</text>
+
+<circle cx="600" cy="280" r="14" fill="#ff5252"/>
+<text x="595" y="285">🚆</text>
+
+<circle cx="470" cy="250" r="14" fill="#89ff5a"/>
+<text x="465" y="255">🚆</text>
+
+<circle cx="760" cy="290" r="14" fill="#ffd54f"/>
+<text x="755" y="295">🚆</text>
+
+</g>
+
+</svg>
+
+</div>
+
+</div>
+
+</main>
+
+<!-- RIGHT -->
+
+<aside class="right-panel">
+
+<div class="panel">
+
+<div class="panel-title">
+お知らせ
+</div>
+
+<div class="notice-list">
+
+<div class="notice-item">
+<span>14:20</span>
+中央線 一部区間で遅延
+</div>
+
+<div class="notice-item">
+<span>13:50</span>
+山手線 点検のため運転調整
+</div>
+
+<div class="notice-item">
+<span>12:10</span>
+京浜東北線 通常運行
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+インシデント一覧
+</div>
+
+<table class="incident-table">
+
+<thead>
+
+<tr>
+<th>時刻</th>
+<th>種別</th>
+<th>内容</th>
+<th>状態</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>14:20</td>
+<td class="delay">遅延</td>
+<td>中央線一部区間</td>
+<td><span class="badge yellow">対応中</span></td>
+</tr>
+
+<tr>
+<td>13:10</td>
+<td class="trouble">故障</td>
+<td>E233系 モーター異常</td>
+<td><span class="badge yellow">対応中</span></td>
+</tr>
+
+<tr>
+<td>11:45</td>
+<td class="cancel">運休</td>
+<td>大雨による運休</td>
+<td><span class="badge green">解決済</span></td>
+</tr>
+
+<tr>
+<td>09:30</td>
+<td class="delay">遅延</td>
+<td>信号トラブル</td>
+<td><span class="badge green">解決済</span></td>
+</tr>
+
+<tr>
+<td>08:15</td>
+<td class="inspect">点検</td>
+<td>車両定期点検</td>
+<td><span class="badge blue">完了</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</aside>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
