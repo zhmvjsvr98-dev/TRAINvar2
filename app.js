@@ -1,8 +1,11 @@
-// =========================
-// TOMS
-// Train Operation Management System
-// app.js
-// =========================
+/* =====================================
+   TOMS
+   Train Operation Management System
+===================================== */
+
+/* =====================================
+   DOM
+===================================== */
 
 const loginScreen =
 document.getElementById("loginScreen");
@@ -22,75 +25,79 @@ document.getElementById("rememberLogin");
 const currentDateTime =
 document.getElementById("currentDateTime");
 
-// =========================
-// LOGIN
-// =========================
+/* =====================================
+   SCREEN CONTROL
+===================================== */
 
-function showDashboard() {
+function showDashboard(){
 
     loginScreen.classList.add("hidden");
     dashboardScreen.classList.remove("hidden");
 
 }
 
-function showLogin() {
+function showLogin(){
 
     dashboardScreen.classList.add("hidden");
     loginScreen.classList.remove("hidden");
 
 }
 
-// =========================
-// LOGIN BUTTON
-// =========================
+/* =====================================
+   LOGIN
+===================================== */
 
-loginBtn?.addEventListener("click", () => {
+loginBtn?.addEventListener("click",()=>{
 
     showDashboard();
 
-    if (rememberLogin.checked) {
+    if(rememberLogin.checked){
+
         localStorage.setItem(
-            "tomsLoggedIn",
+            "toms_login",
             "true"
         );
-    } else {
+
+    }else{
+
         localStorage.removeItem(
-            "tomsLoggedIn"
+            "toms_login"
         );
+
     }
 
 });
 
-// =========================
-// LOGOUT
-// =========================
+/* =====================================
+   LOGOUT
+===================================== */
 
-logoutBtn?.addEventListener("click", () => {
+logoutBtn?.addEventListener("click",()=>{
 
     localStorage.removeItem(
-        "tomsLoggedIn"
+        "toms_login"
     );
 
     showLogin();
 
 });
 
-// =========================
-// AUTO LOGIN
-// =========================
+/* =====================================
+   AUTO LOGIN
+===================================== */
 
-window.addEventListener("load", () => {
+window.addEventListener("load",()=>{
 
-    const isLoggedIn =
+    const loginState =
     localStorage.getItem(
-        "tomsLoggedIn"
+        "toms_login"
     );
 
-    if (isLoggedIn === "true") {
+    if(loginState==="true"){
 
         showDashboard();
 
-    } else {
+    }else{
 
         showLogin();
 
@@ -98,43 +105,15 @@ window.addEventListener("load", () => {
 
 });
 
-// =========================
-// CLOCK
-// =========================
+/* =====================================
+   CLOCK
+===================================== */
 
-function updateDateTime() {
+function updateClock(){
 
     const now = new Date();
 
-    const year =
-    now.getFullYear();
-
-    const month =
-    String(
-        now.getMonth() + 1
-    ).padStart(2, "0");
-
-    const day =
-    String(
-        now.getDate()
-    ).padStart(2, "0");
-
-    const hour =
-    String(
-        now.getHours()
-    ).padStart(2, "0");
-
-    const minute =
-    String(
-        now.getMinutes()
-    ).padStart(2, "0");
-
-    const second =
-    String(
-        now.getSeconds()
-    ).padStart(2, "0");
-
-    const weekdays = [
+    const weeks = [
         "日",
         "月",
         "火",
@@ -144,142 +123,338 @@ function updateDateTime() {
         "土"
     ];
 
-    const weekday =
-    weekdays[now.getDay()];
+    const yyyy =
+    now.getFullYear();
 
-    if (currentDateTime) {
+    const mm =
+    String(
+        now.getMonth()+1
+    ).padStart(2,"0");
+
+    const dd =
+    String(
+        now.getDate()
+    ).padStart(2,"0");
+
+    const hh =
+    String(
+        now.getHours()
+    ).padStart(2,"0");
+
+    const mi =
+    String(
+        now.getMinutes()
+    ).padStart(2,"0");
+
+    const ss =
+    String(
+        now.getSeconds()
+    ).padStart(2,"0");
+
+    const ww =
+    weeks[now.getDay()];
+
+    if(currentDateTime){
 
         currentDateTime.textContent =
-        `${year}/${month}/${day} (${weekday}) ${hour}:${minute}:${second}`;
+        `${yyyy}/${mm}/${dd} (${ww}) ${hh}:${mi}:${ss}`;
 
     }
 
 }
 
-updateDateTime();
+updateClock();
 
 setInterval(
-    updateDateTime,
+    updateClock,
     1000
 );
 
-// =========================
-// SIDEBAR ACTIVE EFFECT
-// =========================
+/* =====================================
+   SIDEBAR
+===================================== */
 
-const menuItems =
+const sidebarItems =
 document.querySelectorAll(
     ".sidebar li"
 );
 
-menuItems.forEach(item => {
+sidebarItems.forEach(item=>{
 
-    item.addEventListener(
-        "click",
-        () => {
+    item.addEventListener("click",()=>{
 
-            menuItems.forEach(el => {
-                el.classList.remove(
-                    "active"
-                );
-            });
+        sidebarItems.forEach(li=>{
 
-            item.classList.add(
+            li.classList.remove(
                 "active"
             );
 
-        }
-    );
+        });
+
+        item.classList.add(
+            "active"
+        );
+
+    });
 
 });
 
-// =========================
-// LINE TAB
-// =========================
+/* =====================================
+   LINE BUTTON
+===================================== */
 
-const routeTabs =
+const lineButtons =
 document.querySelectorAll(
-    ".tab"
+    ".line-btn"
 );
 
-routeTabs.forEach(tab => {
+lineButtons.forEach(btn=>{
 
-    tab.addEventListener(
-        "click",
-        () => {
+    btn.addEventListener("click",()=>{
 
-            routeTabs.forEach(t => {
-                t.classList.remove(
-                    "active"
-                );
-            });
+        lineButtons.forEach(b=>{
 
-            tab.classList.add(
+            b.classList.remove(
                 "active"
             );
 
-        }
-    );
+        });
+
+        btn.classList.add(
+            "active"
+        );
+
+    });
 
 });
 
-// =========================
-// KPI CARD HOVER GLOW
-// =========================
+/* =====================================
+   KPI GLOW
+===================================== */
 
-const cards =
+const kpiCards =
 document.querySelectorAll(
-    ".stat-card"
+    ".kpi-card"
 );
 
-cards.forEach(card => {
+kpiCards.forEach(card=>{
 
-    card.addEventListener(
-        "mouseenter",
-        () => {
+    card.addEventListener("mouseenter",()=>{
 
-            card.style.boxShadow =
-            "0 0 25px rgba(30,136,229,.35)";
+        card.style.transform =
+        "translateY(-4px) scale(1.02)";
 
-        }
+    });
+
+    card.addEventListener("mouseleave",()=>{
+
+        card.style.transform =
+        "translateY(0) scale(1)";
+
+    });
+
+});
+
+/* =====================================
+   PANEL ANIMATION
+===================================== */
+
+window.addEventListener("load",()=>{
+
+    const panels =
+    document.querySelectorAll(
+        ".dashboard-panel,.kpi-card"
     );
 
-    card.addEventListener(
-        "mouseleave",
-        () => {
+    panels.forEach(
+        (panel,index)=>{
 
-            card.style.boxShadow =
-            "";
+            panel.style.opacity="0";
+            panel.style.transform=
+            "translateY(20px)";
+
+            setTimeout(()=>{
+
+                panel.style.transition=
+                ".5s ease";
+
+                panel.style.opacity="1";
+
+                panel.style.transform=
+                "translateY(0)";
+
+            },index*80);
 
         }
     );
 
 });
 
-// =========================
-// SIMULATED LIVE NOTICE
-// =========================
+/* =====================================
+   SVG TRAIN MOVEMENT
+===================================== */
 
-const notices = [
-    "中央線 高尾駅付近で速度規制実施",
-    "山手線 平常運転を継続中",
-    "京浜東北線 一部車両点検実施",
-    "総武線 設備点検完了",
-    "東海道線 混雑情報更新",
-    "宇都宮線 通常運転中"
+const train1 =
+document.getElementById("train1");
+
+const train2 =
+document.getElementById("train2");
+
+const train3 =
+document.getElementById("train3");
+
+let t1 = 0;
+let t2 = 0.33;
+let t3 = 0.66;
+
+/* 路線1周 */
+
+function trainPosition(t){
+
+    let x;
+    let y;
+
+    if(t < 0.25){
+
+        const p = t / 0.25;
+
+        x = 150 + p * 670;
+        y = 70;
+
+    }else if(t < 0.5){
+
+        const p = (t - 0.25) / 0.25;
+
+        x = 820;
+        y = 70 + p * 260;
+
+    }else if(t < 0.75){
+
+        const p = (t - 0.5) / 0.25;
+
+        x = 820 - p * 670;
+        y = 330;
+
+    }else{
+
+        const p =
+        (t - 0.75) / 0.25;
+
+        x = 150;
+        y = 330 - p * 260;
+
+    }
+
+    return {x,y};
+
+}
+
+/* =====================================
+   TRAIN LOOP
+===================================== */
+
+function animateTrains(){
+
+    t1 += 0.0012;
+    t2 += 0.0010;
+    t3 += 0.0015;
+
+    if(t1 > 1) t1 = 0;
+    if(t2 > 1) t2 = 0;
+    if(t3 > 1) t3 = 0;
+
+    const p1 =
+    trainPosition(t1);
+
+    const p2 =
+    trainPosition(t2);
+
+    const p3 =
+    trainPosition(t3);
+
+    if(train1){
+
+        train1.setAttribute(
+            "transform",
+            `translate(${p1.x},${p1.y})`
+        );
+
+    }
+
+    if(train2){
+
+        train2.setAttribute(
+            "transform",
+            `translate(${p2.x},${p2.y})`
+        );
+
+    }
+
+    if(train3){
+
+        train3.setAttribute(
+            "transform",
+            `translate(${p3.x},${p3.y})`
+        );
+
+    }
+
+    requestAnimationFrame(
+        animateTrains
+    );
+
+}
+
+animateTrains();
+
+/* =====================================
+   DELAY TRAIN BLINK
+===================================== */
+
+let blink = true;
+
+setInterval(()=>{
+
+    blink = !blink;
+
+    if(train2){
+
+        train2.style.opacity =
+        blink ? "1" : "0.4";
+
+    }
+
+},600);
+
+/* =====================================
+   LIVE NOTICE
+===================================== */
+
+const noticeMessages = [
+
+"中央線 一部区間で速度規制中",
+"上野駅構内 設備点検実施",
+"山手線 平常運転を継続中",
+"京浜東北線 運転調整中",
+"信号設備点検完了",
+"運転整理を実施しています",
+"車両入換作業を実施中"
+
 ];
 
-function addNotice() {
+function addNotice(){
 
-    const noticeList =
+    const list =
     document.querySelector(
         ".notice-list"
     );
 
-    if (!noticeList) return;
+    if(!list) return;
 
     const item =
-    document.createElement("div");
+    document.createElement(
+        "div"
+    );
 
     item.className =
     "notice-item";
@@ -287,96 +462,73 @@ function addNotice() {
     const now =
     new Date();
 
-    const time =
+    const hh =
     String(
         now.getHours()
-    ).padStart(2,"0") +
-    ":" +
+    ).padStart(2,"0");
+
+    const mm =
     String(
         now.getMinutes()
     ).padStart(2,"0");
 
+    const text =
+    noticeMessages[
+        Math.floor(
+            Math.random() *
+            noticeMessages.length
+        )
+    ];
+
     item.innerHTML =
-    `<span>${time}</span> ${notices[Math.floor(Math.random()*notices.length)]}`;
+    `${hh}:${mm} ${text}`;
 
-    noticeList.prepend(item);
+    list.prepend(item);
 
-    while (
-        noticeList.children.length > 5
-    ) {
-        noticeList.removeChild(
-            noticeList.lastElementChild
+    while(
+        list.children.length > 6
+    ){
+
+        list.removeChild(
+            list.lastElementChild
         );
+
     }
 
 }
 
-// デモ用
 setInterval(
     addNotice,
     30000
 );
 
-// =========================
-// DASHBOARD START EFFECT
-// =========================
+/* =====================================
+   PANEL GLOW EFFECT
+===================================== */
 
-window.addEventListener(
-    "load",
-    () => {
+setInterval(()=>{
 
-        const panels =
-        document.querySelectorAll(
-            ".panel, .stat-card"
-        );
+    const glowPanels =
+    document.querySelectorAll(
+        ".dashboard-panel"
+    );
 
-        panels.forEach(
-            (panel,index) => {
+    glowPanels.forEach(panel=>{
 
-                panel.style.opacity = "0";
-                panel.style.transform =
-                "translateY(15px)";
+        panel.style.boxShadow =
+        "0 0 25px rgba(0,160,255,.08)";
 
-                setTimeout(() => {
+        setTimeout(()=>{
 
-                    panel.style.transition =
-                    ".5s ease";
+            panel.style.boxShadow =
+            "0 0 10px rgba(0,160,255,.03)";
 
-                    panel.style.opacity = "1";
-
-                    panel.style.transform =
-                    "translateY(0)";
-
-                }, index * 80);
-
-            }
-        );
-
-    }
-);
-
-// =========================
-// SVG TRAIN BLINK
-// =========================
-
-const trainIcons =
-document.querySelectorAll(
-    "svg circle"
-);
-
-setInterval(() => {
-
-    trainIcons.forEach(icon => {
-
-        icon.style.opacity =
-        icon.style.opacity === "0.4"
-        ? "1"
-        : "0.4";
+        },800);
 
     });
 
-}, 1200);
+},4000);
 
-// =========================
-// END
-// =========================
+/* =====================================
+   END
+===================================== */
